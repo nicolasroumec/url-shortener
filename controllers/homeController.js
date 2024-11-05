@@ -1,17 +1,19 @@
-import Url from '../models/Url.js';
-import { nanoid } from 'nanoid';
+import Url from "../models/url.js";
+import { nanoid } from "nanoid";
 
-export const leerUrls = async (req, res) => {
+// Read URLs
+export const readUrls = async (req, res) => {
   try {
     const urls = await Url.find().lean();
     res.render("home", { urls: urls });
   } catch (error) {
     console.log(error);
-    res.send("Something went wrong");
+    res.send("something went wrong");
   }
 };
 
-export const agregarUrl = async (req, res) => {
+// Add
+export const addUrl = async (req, res) => {
   try {
     const { origin } = req.body;
     const url = new Url({ origin: origin, shortURL: nanoid(8) });
@@ -19,6 +21,57 @@ export const agregarUrl = async (req, res) => {
     res.redirect("/");
   } catch (error) {
     console.log(error);
-    res.send("Something went wrong");
+    res.send("something went wrong");
+  }
+};
+
+// Delete
+export const deleteUrl = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Url.findByIdAndDelete(id);
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+    res.send("something went wrong");
+  }
+};
+
+// Edit URL form
+export const editUrlForm = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const urlDB = await Url.findById(id).lean();
+    res.render("home", { urlDB });
+  } catch (error) {
+    console.log(error);
+    res.send("something went wrong");
+  }
+};
+
+// Update
+export const editUrl = async (req, res) => {
+  const { id } = req.params;
+  const { origin } = req.body;
+  try {
+    await Url.findByIdAndUpdate(id, { origin: origin });
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Redirect
+export const redirect = async (req, res) => {
+  const { shortURL } = req.params;
+  try {
+    const urlDB = await Url.findOne({ shortURL: shortURL });
+    if (!urlDB) {
+      return res.status(404).send("URL not found");
+    }
+    res.redirect(urlDB.origin);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
   }
 };
