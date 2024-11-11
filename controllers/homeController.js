@@ -16,12 +16,15 @@ export const readUrls = async (req, res) => {
 export const addUrl = async (req, res) => {
   try {
     const { origin } = req.body;
+    if (!origin || origin.trim() === '') {
+      return res.status(400).send("Origin URL cannot be empty.");
+    }
     const url = new Url({ origin: origin, shortURL: nanoid(8) });
     await url.save();
     res.redirect("/");
   } catch (error) {
     console.log(error);
-    res.send("something went wrong");
+    res.send("Something went wrong.");
   }
 };
 

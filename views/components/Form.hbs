@@ -1,21 +1,29 @@
+{{#if error}}
+  <div class="alert alert-danger" role="alert">
+    {{error}}
+  </div>
+{{/if}}
+
 {{#if urlDB}}
-  <form action="/edit/{{urlDB._id}}" method="post">
+  <form id="urlForm" action="/edit/{{urlDB._id}}" method="post">
     <input
       value="{{urlDB.origin}}"
-      type="text"
-      placeholder="Enter URL"
+      type="url"
+      placeholder="Enter a valid URL (e.g., https://example.com)"
       name="origin"
       class="form-control my-2"
+      required
     />
     <button type="submit" class="btn btn-warning w-100 mb-2">Edit URL</button>
   </form>
 {{else}}
-  <form action="/" method="post">
+  <form id="urlForm" action="/" method="post">
     <input
-      type="text"
-      placeholder="Enter URL"
+      type="url"
+      placeholder="Enter a valid URL (e.g., https://example.com)"
       name="origin"
       class="form-control my-2"
+      required
     />
     <button type="submit" class="btn btn-primary w-100 mb-2">Add URL</button>
   </form>

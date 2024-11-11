@@ -12,4 +12,16 @@ document.addEventListener("click", (e) => {
         });
     }
   });
+
+  document.getElementById("urlForm").addEventListener("submit", (event) => {
+    const urlInput = event.target.origin.value.trim();
+  
+    // Validar formato de URL con regex
+    const urlPattern = /^(https?:\/\/)([\w-]+(\.[\w-]+)+)(\/[\w-]*)*$/;
+  
+    if (!urlPattern.test(urlInput)) {
+      event.preventDefault(); // Evitar envío del formulario
+      alert("Please enter a valid URL (e.g., https://example.com)");
+    }
+  });
   
