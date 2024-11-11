@@ -1,4 +1,4 @@
-import Url from "../models/url.js";
+import Url from "../models/Url.js";
 import { nanoid } from "nanoid";
 
 // Read URLs
